@@ -1,0 +1,8 @@
+*.o
+*.elf
+*.hex
+*.lst
+*.map
+*.bin
+.gdbinit
+build/
