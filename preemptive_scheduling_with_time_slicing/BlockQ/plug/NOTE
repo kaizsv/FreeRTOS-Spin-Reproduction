@@ -1,0 +1,19 @@
+How to decide the spinning value?
+
+* We spin the plug task by querying the SysTick cycle count
+  (QconsB3.c:19 and QProdB2.c: 18).
+* If the spinning value is SystemCoreClock, there is no spinning.
+
+1. At first, the spinning value is initialized to SystemCoreClock.
+2. Decide a victim to be starved, for example, QConsB3.
+3. Compile the program and flash to a STM32F429 board.
+   Also, run openocd and gdb in separate terminals.
+4. In GDB, watch the pointer pxCurrentTCB until pxCurrentTCB points to the victim.
+5. Read DWT->CYCCNT. Assign the value to the spinning variable.
+   This make the SysTick interrupt the execution of the scheduler while the
+   victim is selected by the scheduler.
+6. Compile the program and flash to a STM32F429 board.
+   Observe the on-board LED.
+7. If no error occurs, we need to change the spinning value while execution.
+   Do step 3 again.
+8. If an error occurs, use GDB to check the error information.
