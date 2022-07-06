@@ -7,6 +7,12 @@
 apt install gcc-arm-none-eabi gdb-multiarch openocd stlink-tools make
 ```
 
+Update submodules
+```
+cd FreeRTOS-Spin-Reproduction
+git submodule update --init --recursive
+```
+
 2. Compile an application and flash binary to stm32f429
 ```
 cd <<scheduling_policy>>/<<application>>
