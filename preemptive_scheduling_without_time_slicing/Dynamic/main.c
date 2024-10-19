@@ -151,6 +151,8 @@ static void prvSetupHardware( void )
 	/* Setup STM32 system (clock, PLL and Flash configuration) */
     HAL_Init();
 
+    SystemCoreClockUpdate();
+
 	/* Setup the LED outputs. */
 	vParTestInitialise();
 }

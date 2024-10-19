@@ -1,5 +1,5 @@
 /*
- * FreeRTOS V202104.00
+ * FreeRTOS V202107.00
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -150,6 +150,8 @@ static void prvSetupHardware( void )
 {
 	/* Setup STM32 system (clock, PLL and Flash configuration) */
     HAL_Init();
+
+    SystemCoreClockUpdate();
 
 	/* Setup the LED outputs. */
 	vParTestInitialise();

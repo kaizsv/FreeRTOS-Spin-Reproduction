@@ -8,7 +8,7 @@ ifdef FIX
 endif
 
 LDFLAGS += -T$(LIB_DIR)/$(STM32CUBEF4)/Projects/STM32F429I-Discovery/$\
-		   Templates/SW4STM32/STM32F429I_DISCO/STM32F429ZITx_FLASH.ld
+		   Templates/STM32CubeIDE/STM32F429ZITX_FLASH.ld
 
 CINC = -I. -I./inc $(subst -I, -I$(LIB_DIR)/, $(LIB_CINC))
 CSRC = $(wildcard *.c)

@@ -3,8 +3,8 @@
 1. In GDB, set breakpoints.
 ```
 (gdb) hb vBlockingQueueConsumer
-(gdb) hb BlockQ.c:275
-(gdb) hb BlockQ.c:282
+(gdb) hb BlockQ.c:292
+(gdb) hb BlockQ.c:299
 ```
 
 2. Reset and halt the target.
@@ -14,20 +14,20 @@
 (gdb) c
 Continuing.
 
-Breakpoint 1, vBlockingQueueConsumer (pvParameters=0x20000878 <ucHeap+648>) at BlockQ.c:213
-213         uint16_t usData, usExpectedValue = 0;
+Breakpoint 1, vBlockingQueueConsumer (pvParameters=0x200005f8 <ucHeap+636>) at BlockQ.c:223
+223	    uint16_t usData, usExpectedValue = 0;
 (gdb) c
 Continuing.
-halted: PC: 0x08003a30
+halted: PC: 0x080007ac
 
-Breakpoint 1, vBlockingQueueConsumer (pvParameters=0x20001418 <ucHeap+3624>) at BlockQ.c:213
-213         uint16_t usData, usExpectedValue = 0;
+Breakpoint 1, vBlockingQueueConsumer (pvParameters=0x20001158 <ucHeap+3548>) at BlockQ.c:223
+223	    uint16_t usData, usExpectedValue = 0;
 (gdb) c
 Continuing.
-halted: PC: 0x08003a30
+halted: PC: 0x080007ac
 
-Breakpoint 3, xAreBlockingQueuesStillRunning () at BlockQ.c:282
-282                 xReturn = pdFALSE;
+Breakpoint 3, xAreBlockingQueuesStillRunning () at BlockQ.c:299
+299	            xReturn = pdFALSE;
 ```
 
 3. Check the error information

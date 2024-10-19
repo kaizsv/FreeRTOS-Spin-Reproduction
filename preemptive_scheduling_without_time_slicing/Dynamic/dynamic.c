@@ -1,6 +1,6 @@
 /*
- * FreeRTOS V202107.00
- * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS V202212.00
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -19,10 +19,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.FreeRTOS.org
- * http://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
+ * https://github.com/FreeRTOS
  *
- * 1 tab == 4 spaces!
  */
 
 /*
@@ -109,7 +108,7 @@ static portTASK_FUNCTION_PROTO( vQueueSendWhenSuspendedTask, pvParameters );
     #define priSUSPENDED_RX_TASK_STACK_SIZE    ( configMINIMAL_STACK_SIZE )
 #endif
 #define priSTACK_SIZE                          ( configMINIMAL_STACK_SIZE )
-#define priSLEEP_TIME                          pdMS_TO_TICKS( 127 )
+#define priSLEEP_TIME                          pdMS_TO_TICKS( 128 )
 #define priLOOPS                               ( 5 )
 #define priMAX_COUNT                           ( ( uint32_t ) 0xff )
 #define priNO_BLOCK                            ( ( TickType_t ) 0 )
@@ -149,10 +148,6 @@ static uint32_t ulExpectedValue = ( uint32_t ) 0;
  */
 void vStartDynamicPriorityTasks( void )
 {
-    CoreDebug->DEMCR |= DWT_CTRL_EXCTRCENA_Msk;
-    DWT->CYCCNT = 0;
-    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
-
     xSuspendedTestQueue = xQueueCreate( priSUSPENDED_QUEUE_LENGTH, sizeof( uint32_t ) );
 
     if( xSuspendedTestQueue != NULL )
@@ -274,9 +269,9 @@ static portTASK_FUNCTION( vCounterControlTask, pvParameters )
             vTaskSuspend( xContinuousIncrementHandle );
             {
                 #if ( INCLUDE_eTaskGetState == 1 )
-                    {
-                        configASSERT( eTaskGetState( xContinuousIncrementHandle ) == eSuspended );
-                    }
+                {
+                    configASSERT( eTaskGetState( xContinuousIncrementHandle ) == eSuspended );
+                }
                 #endif /* INCLUDE_eTaskGetState */
 
                 ulLastCounter = ulCounter;
@@ -288,9 +283,18 @@ static portTASK_FUNCTION( vCounterControlTask, pvParameters )
             #endif
 
             #if ( INCLUDE_eTaskGetState == 1 )
+            {
+                #if ( configNUMBER_OF_CORES > 1 )
+                {
+                    eTaskState eState = eTaskGetState( xContinuousIncrementHandle );
+                    configASSERT( ( eState == eReady ) || ( eState == eRunning ) );
+                }
+                #else
                 {
                     configASSERT( eTaskGetState( xContinuousIncrementHandle ) == eReady );
                 }
+                #endif
+            }
             #endif /* INCLUDE_eTaskGetState */
 
             /* Now delay to ensure the other task has processor time. */
@@ -306,7 +310,6 @@ static portTASK_FUNCTION( vCounterControlTask, pvParameters )
                     /* The shared variable has not changed.  There is a problem
                      * with the continuous count task so flag an error. */
                     sError = pdTRUE;
-                    configASSERT(0==1);
                 }
             }
             xTaskResumeAll();
@@ -322,9 +325,9 @@ static portTASK_FUNCTION( vCounterControlTask, pvParameters )
         ulCounter = ( uint32_t ) 0;
 
         #if ( INCLUDE_eTaskGetState == 1 )
-            {
-                configASSERT( eTaskGetState( xLimitedIncrementHandle ) == eSuspended );
-            }
+        {
+            configASSERT( eTaskGetState( xLimitedIncrementHandle ) == eSuspended );
+        }
         #endif /* INCLUDE_eTaskGetState */
 
         /* Resume the limited count task which has a higher priority than us.
@@ -339,9 +342,9 @@ static portTASK_FUNCTION( vCounterControlTask, pvParameters )
         /* This task should not run again until xLimitedIncrementHandle has
          * suspended itself. */
         #if ( INCLUDE_eTaskGetState == 1 )
-            {
-                configASSERT( eTaskGetState( xLimitedIncrementHandle ) == eSuspended );
-            }
+        {
+            configASSERT( eTaskGetState( xLimitedIncrementHandle ) == eSuspended );
+        }
         #endif /* INCLUDE_eTaskGetState */
 
         /* Does the counter variable have the expected value? */
@@ -426,9 +429,9 @@ static portTASK_FUNCTION( vQueueReceiveWhenSuspendedTask, pvParameters )
             xTaskResumeAll();
 
             #if configUSE_PREEMPTION == 0
-                {
-                    taskYIELD();
-                }
+            {
+                taskYIELD();
+            }
             #endif
         } while( xGotValue == pdFALSE );
 

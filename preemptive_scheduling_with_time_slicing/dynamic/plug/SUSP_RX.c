@@ -28,16 +28,16 @@ static void prvPlug( void *pvParameters )
 {
     (void) pvParameters;
 
-    uint32_t spinning = 3866U;
+    uint32_t spinning = 4495U;
     uint32_t counter = 0U;
 
     for ( ;; ) {
         /* Conditionally assign value to "spinning" without branching */
-        spinning = spinning ^ ((2286U ^ spinning) & -(counter == 1));
-        spinning = spinning ^ ((218U ^ spinning) & -(counter == 2));
-        spinning = spinning ^ ((1547U ^ spinning) & -(counter > 3 && counter % 3 == 1));
-        spinning = spinning ^ ((218U ^ spinning) & -(counter > 3 && counter % 3 == 2));
-        spinning = spinning ^ ((1377U ^ spinning) & -(counter == 128));
+        spinning = spinning ^ ((1587U ^ spinning) & -(counter == 1));
+        spinning = spinning ^ ((220U ^ spinning) & -(counter == 2));
+        spinning = spinning ^ ((1587U ^ spinning) & -(counter > 3 && counter % 3 == 1));
+        spinning = spinning ^ ((220U ^ spinning) & -(counter > 3 && counter % 3 == 2));
+        spinning = spinning ^ ((3241U ^ spinning) & -(counter == 128));
         spinning = spinning ^ ((NO_SPIN ^ spinning) & -(counter == 129));
 
         /* Busy waiting until a precise clock count */

@@ -12,7 +12,7 @@ AS = $(COMPILER)-as
 OBJCOPY = $(COMPILER)-objcopy
 OBJDUMP = $(COMPILER)-objdump
 SIZE = $(COMPILER)-size
-GDB = gdb-multiarch
+GDB = arm-none-eabi-gdb
 
 MCU = -mcpu=cortex-m4 -march=armv7e-m -mtune=cortex-m4
 CFLAGS = -ggdb3 -O0 -std=c99 -W -Wall $(MCU) \

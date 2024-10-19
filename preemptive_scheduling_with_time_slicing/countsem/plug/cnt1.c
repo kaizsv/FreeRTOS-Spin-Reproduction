@@ -35,7 +35,7 @@ static void prvPlug( void *pvParameters )
 
     for ( ;; ) {
         /* Conditionally assign value to "spinning" without branching */
-        spinning = spinning ^ ((214U ^ spinning) & -(counter == START_STARVING));
+        spinning = spinning ^ ((216U ^ spinning) & -(counter == START_STARVING));
         spinning = spinning ^ ((NO_SPIN ^ spinning) & -(counter == STARVE_DURATION));
 
         /* Busy waiting until a precise clock count */
